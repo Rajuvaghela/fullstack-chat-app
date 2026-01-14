@@ -32,6 +32,21 @@ app.use(
   })
 );
 
+// Health check endpoint for debugging
+app.get("/health", (req, res) => {
+  const distPath = path.join(projectRoot, "frontend/dist");
+  const indexPath = path.join(projectRoot, "frontend", "dist", "index.html");
+
+  res.json({
+    status: "ok",
+    env: process.env.NODE_ENV,
+    projectRoot: projectRoot,
+    distPath: distPath,
+    distExists: fs.existsSync(distPath),
+    indexExists: fs.existsSync(indexPath),
+  });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
 
